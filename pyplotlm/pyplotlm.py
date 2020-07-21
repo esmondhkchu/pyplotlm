@@ -10,6 +10,13 @@ import seaborn as sns
 class PyPlotLm:
     def __init__(self, reg, X, y, intercept=False):
         """ plot a sklearn linear regression model, analogy to R plot(lm())
+            there are six plots avaiable:
+            1. Residuals vs Fitted
+            2. Normal Q-Q
+            3. Scale-Location
+            4. Cook's Distance
+            5. Residuals vs Leverage
+            6. Cook's Distance vs Leverage
 
         Parameters: reg (sklearn.linear_model) - a fitted sklearn.linear_model object
                     X (nd-array) - the design matrix
@@ -38,6 +45,7 @@ class PyPlotLm:
         1. Regression Deletion Diagnostics (R)
         https://stat.ethz.ch/R-manual/R-devel/library/stats/html/influence.measures.html
         https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm
+        https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/plot.lm
 
         2. Residuals and Influence in Regression
         https://conservancy.umn.edu/handle/11299/37076
@@ -87,28 +95,43 @@ class PyPlotLm:
         self.cooks = cooks_distance(self.standard_residuals, self.h, self.p)
         self.cooks_max_3 = np.argsort(self.cooks)[::-1][:3]
 
-    def plot(self):
-        """ plot all 4 plots
+    def plot(self, which=None):
+        """ by default this method plots the most common 4 plots, which is 1, 2, 3 and 5
             i.e.
             1. Residuals vs Fitted
             2. Normal Q-Q
             3. Scale-Location
-            4. Residuals vs Leverage
+            5. Residuals vs Leverage
 
         Cook's Distance plot isn't on the traditional R plots, so will exclude from here
         But, the class method self.cook_distance() will plot
         """
-        plt.subplot(221)
-        self.residuals_fitted()
+        if which is not None:
+            if which == 1:
+                self.residuals_fitted()
+            elif which == 2:
+                self.normal_qq()
+            elif which == 3:
+                self.scale_location()
+            elif which == 4:
+                self.cooks_distance()
+            elif which == 5:
+                self.residual_leverage()
+            elif which == 6:
+                self.cooks_leverage()
 
-        plt.subplot(222)
-        self.normal_qq()
+        else:
+            plt.subplot(221)
+            self.residuals_fitted()
 
-        plt.subplot(223)
-        self.scale_location()
+            plt.subplot(222)
+            self.normal_qq()
 
-        plt.subplot(224)
-        self.residual_leverage()
+            plt.subplot(223)
+            self.scale_location()
+
+            plt.subplot(224)
+            self.residual_leverage()
 
     def residuals_fitted(self):
         """ plot 1. Residuals vs Fitted
@@ -157,8 +180,21 @@ class PyPlotLm:
         plt.xlabel('Fitted values', size=20)
         plt.ylabel('$\sqrt{|Standardized residuals|}$', size=20)
 
+    def cooks_distance(self):
+        """ plot 4. Cook's Distance
+        """
+        plt.bar(range(len(self.cooks)), self.cooks)
+
+        # cook's distance max 3 annotation
+        for i in self.cooks_max_3:
+            plt.annotate(i, xy=[i, self.cooks[i]])
+
+        plt.title("Cook's Distance", size=20)
+        plt.xlabel('Obs. number', size=20)
+        plt.ylabel("Cook's Distance", size=20)
+
     def residual_leverage(self):
-        """ plot 4. Residuals vs Leverage
+        """ plot 5. Residuals vs Leverage
         """
         min_y = min(self.standard_residuals) + min(self.standard_residuals)*0.15
         max_y = max(self.standard_residuals) + max(self.standard_residuals)*0.15
@@ -201,10 +237,17 @@ class PyPlotLm:
         plt.xlabel('Leverage', size=20)
         plt.ylabel('Standardized residuals', size=20)
 
-    def cook_distance(self):
-        """ plot 5. Cook's Distance
+    def cooks_leverage(self):
+        """ plot 6. Cook's Distance vs Leverage
         """
-        plt.bar(range(len(self.cooks)), self.cooks)
-        plt.title("Cook's Distance", size=20)
-        plt.xlabel('Observations', size=20)
-        plt.ylabel("Cook's Distance", size=20)
+        sns.regplot(self.h, self.cooks,
+            lowess=True,
+            scatter_kws={'alpha': 0.5},
+            line_kws={'color': 'red', 'lw': 1})
+
+        for i in self.cooks_max_3:
+            plt.annotate(i, xy=[self.h[i], self.cooks[i]])
+
+        plt.title("Cook's dist vs Leverage $h_{ii}$", size=20)
+        plt.xlabel('Leverage $h_{ii}$', size=20)
+        plt.ylabel("Cook's distance", size=20)
