@@ -48,14 +48,14 @@ This will produce the same set of diagnostic plots: <br>
 ![](https://github.com/esmondhkchu/pyplotlm/blob/dev/graph/python_plot.png) <br>
 
 ## References:
-1. Regression Deletion Diagnostics (R)
+1. Regression Deletion Diagnostics (R) <br>
 https://stat.ethz.ch/R-manual/R-devel/library/stats/html/influence.measures.html <br>
 https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm <br>
 https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/plot.lm <br>
 
-2. Residuals and Influence in Regression
+2. Residuals and Influence in Regression <br>
 https://conservancy.umn.edu/handle/11299/37076 <br>
 https://en.wikipedia.org/wiki/Studentized_residual <br>
 
-3. Cook's Distance
+3. Cook's Distance <br>
 https://en.wikipedia.org/wiki/Cook%27s_distance <br>
