@@ -1,5 +1,6 @@
-from pyplotlm.influence import *
-from pyplotlm.quantile import *
+from .tools import *
+from .influence import *
+from .quantile import *
 
 import numpy as np
 
@@ -45,6 +46,13 @@ class PyPlotLm:
         3. Cook's Distance
         https://en.wikipedia.org/wiki/Cook%27s_distance
         """
+
+        if not isinstance(X, np.ndarray):
+            raise TypeError('input design matrix must be a numpy array object')
+
+        if X.shape[0] != len(y):
+            raise DimensionError('X dimension must match with y dimension')
+
         self.reg = reg
         self.X = X
         self.y = y

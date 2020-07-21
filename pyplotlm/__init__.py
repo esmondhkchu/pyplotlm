@@ -1,2 +1,4 @@
-from pyplotlm.influence import *
-from pyplotlm.quantile import *
+from .tools import *
+from .influence import *
+from .quantile import *
+from .pyplotlm import *
