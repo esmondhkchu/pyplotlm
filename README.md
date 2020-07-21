@@ -6,7 +6,7 @@ pip install pyplotlm
 ```
 
 ## Introduction
-A replicate of the R style `plot.lm` for Python sklearn environment. <br>
+A replica of the R style `plot.lm` for Python sklearn. <br>
 There are six plots avaiable:
 1. Residuals vs Fitted
 2. Normal Q-Q
