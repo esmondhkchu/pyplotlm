@@ -136,13 +136,14 @@ class PyPlotLm:
     def residuals_fitted(self):
         """ plot 1. Residuals vs Fitted
         """
-        sns.residplot(self.fitted_values, self.y,
+        sns.residplot(self.fitted_values, self.residuals,
               lowess=True,
               scatter_kws={'alpha': 0.5},
               line_kws={'color': 'red', 'lw': 1})
 
         for i in self.resid_max_3:
-            plt.annotate(i, xy=(self.fitted_values[i], abs(self.residuals[i])))
+            # plt.annotate(i, xy=(self.fitted_values[i], abs(self.residuals[i])))
+            plt.annotate(i, xy=(self.fitted_values[i], self.residuals[i]))
 
         plt.title('Residuals vs Fitted', size=20)
         plt.xlabel('Fitted values', size=20)
