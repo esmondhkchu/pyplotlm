@@ -157,14 +157,19 @@ class PyPlotLm:
             scatter_kws={'alpha': 0.5},
             line_kws={'color': 'red', 'lw': 1})
 
-        for i in [-1,-2,-3]:
-            plt.annotate(self.resid_max_3[::-1][i],
-                         xy=[self.theo_quantiles[i],
-                             sorted(self.standard_residuals)[i]])
+        pos_idx = 0
+        neg_idx = 0
+        for i in self.resid_max_3:
+            if self.standard_residuals[i] < 0:
+                plt.annotate(i, xy=[self.theo_quantiles[neg_idx], sorted(self.standard_residuals)[neg_idx]])
+                neg_idx += 1
+            else:
+                pos_idx += -1
+                plt.annotate(i, xy=[self.theo_quantiles[pos_idx], sorted(self.standard_residuals)[pos_idx]])
 
-        plt.title('Normal Q-Q', size=20)
-        plt.xlabel('Theoretical Quantiles', size=20)
-        plt.ylabel('Standardized residuals', size=20)
+                plt.title('Normal Q-Q', size=20)
+                plt.xlabel('Theoretical Quantiles', size=20)
+                plt.ylabel('Standardized residuals', size=20)
 
     def scale_location(self):
         """ plot 3. Scale-Location
@@ -219,20 +224,33 @@ class PyPlotLm:
             plt.annotate(i, xy=[self.h[i], self.standard_residuals[i]])
 
         # plot cook's distance
-        plt.plot(cooks_x, cooks_y_1, label = "Cook's Distance", ls = ':', color = 'r')
-        plt.plot(cooks_x, cooks_y_05_, ls = ':', color = 'r')
-        plt.plot(cooks_x, cooks_y_1_neg, ls = ':', color = 'r')
-        plt.plot(cooks_x, cooks_y_05_neg, ls = ':', color = 'r')
+        if any(cooks_y_1 < max_y):
+            plt.plot(cooks_x, cooks_y_1, ls = ':', color = 'r', label="Cooks's Distance")
 
-        # cook's distance annotation
-        for i in [cooks_y_1[-1], cooks_y_1_neg[-1]]:
-            plt.annotate(1, xy=[cooks_x[-1], i], color='red')
+            for i in [cooks_y_1[-1], cooks_y_1_neg[-1]]:
+                plt.annotate(1, xy=[cooks_x[-1], i], color='red')
 
-        for i in [cooks_y_05_[-1], cooks_y_05_neg[-1]]:
-            plt.annotate(0.5, xy=[cooks_x[-1], i], color='red')
+            plt.legend(frameon=False)
+
+        if any(cooks_y_05_ < max_y):
+            plt.plot(cooks_x, cooks_y_05_, ls = ':', color = 'r')
+
+            for i in [cooks_y_05_[-1], cooks_y_05_neg[-1]]:
+                plt.annotate(0.5, xy=[cooks_x[-1], i], color='red')
+
+        if any(cooks_y_1_neg > min_y):
+            plt.plot(cooks_x, cooks_y_1_neg, ls = ':', color = 'r')
+
+            for i in [cooks_y_1_neg[-1], cooks_y_05_neg[-1]]:
+                plt.annotate(1, xy=[cooks_x[-1], i], color='red')
+
+        if any(cooks_y_05_neg > min_y):
+            plt.plot(cooks_x, cooks_y_05_neg, ls = ':', color = 'r')    
+
+            for i in [cooks_y_05_neg[-1], cooks_y_05_neg[-1]]:
+                plt.annotate(1, xy=[cooks_x[-1], i], color='red')
 
         plt.ylim(min_y, max_y)
-        plt.legend(frameon=False)
 
         plt.title('Residuals vs Leverage', size=20)
         plt.xlabel('Leverage', size=20)
