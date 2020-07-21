@@ -103,8 +103,8 @@ class PyPlotLm:
             3. Scale-Location
             5. Residuals vs Leverage
 
-        Cook's Distance plot isn't on the traditional R plots, so will exclude from here
-        But, the class method self.cook_distance() will plot
+        4. Cook's Distance and 6. Cook's Distance vs Leverage plot aren't as common, so will exclude from default
+        But, we can create these plot by using the 'which' parameters
         """
         if which is not None:
             if which == 1:
