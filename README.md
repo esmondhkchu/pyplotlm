@@ -34,7 +34,6 @@ from pyplotlm import *
 reg = linear_model.LinearRegression()
 reg.fit(X, y)
 
-plt.figure(figsize=(20,15))
 PyPlotLm(reg, X, y).plot()
 plt.show()
 ```
