@@ -18,7 +18,7 @@ setup(
   download_url = 'https://github.com/esmondhkchu/pyplotlm/archive/v0.0.1.tar.gz',
   keywords = ['statistics', 'machine learning', 'regression'],
   test_suite = 'tests',
-  install_requires=['numpy', 'scipy', 'pandas', 'matplotlib', 'seaborn'],
+  install_requires=['numpy', 'scipy', 'matplotlib', 'seaborn'],
   classifiers=[
     'Development Status :: 3 - Alpha',
     'Intended Audience :: Science/Research',
