@@ -269,7 +269,7 @@ class PyPlotLm:
         max_x = max(h_) + max(h_)*0.15
         max_y = max(self.cooks) + max(self.cooks)*0.15
 
-        bval = np.arange(max(np.sqrt(self.p*self.cooks/h_))+1)
+        bval = bval = np.arange(np.max(abs(self.standard_residuals))+1)
 
         sns.regplot(h_, self.cooks,
                     lowess=True,
@@ -280,21 +280,12 @@ class PyPlotLm:
             plt.annotate(i, xy=[h_[i], self.cooks[i]])
 
         for i in bval:
-            bi2 = i**2
-            if max_y > bi2*max_x:
-                y1 = bi2*max_x
-                abline(0, bi2, x_max=max_x, marker=':', color='black')
-                if i == 0:
-                    plt.annotate(i, xy=[max_x, 0])
-                else:
-                    plt.annotate(i, xy=[max_y/bi2, max_y])
+            if i != 0:
+                plt.plot([0,max_y/i], [0,max_y], ':', color='black')
+                plt.annotate(i, xy=[max_y/i, max_y])
             else:
-                plt.plot([0, max_y / bi2], [0, max_y], ':', color='black')
-                if i == 0:
-                    xi = 0
-                else:
-                    xi = max_y / bi2
-                plt.annotate(i, xy=[xi, max_y])
+                plt.plot([0,max_x], [0,0], ':', color='black')
+                plt.annotate(i, xy=[max_x, 0])
 
         plt.title("Cook's dist vs Leverage $h_{ii}/(1-h_{ii})$", size=20)
         plt.xlabel('Leverage $h_{ii}$', size=20)
