@@ -95,7 +95,7 @@ class PyPlotLm:
         self.cooks = cooks_distance(self.standard_residuals, self.h, self.p)
         self.cooks_max_3 = np.argsort(self.cooks)[::-1][:3]
 
-    def plot(self, which=None):
+    def plot(self, which=None, size=(12,10)):
         """ by default this method plots the most common 4 plots, which is 1, 2, 3 and 5
             i.e.
             1. Residuals vs Fitted
@@ -105,6 +105,9 @@ class PyPlotLm:
 
         4. Cook's Distance and 6. Cook's Distance vs Leverage plot aren't as common, so will exclude from default
         But, we can create these plot by using the 'which' parameters
+
+        Parameters: which (int) - by default, it will plot the most common 4 plots, if which is specified, it will plot plot the specific plot
+                    size (tuple) - the size for the 2x2 default plots
         """
         if which is not None:
             if which == 1:
@@ -121,6 +124,9 @@ class PyPlotLm:
                 self.cooks_leverage()
 
         else:
+            plt.figure(figsize=size)
+            plt.subplots_adjust(hspace=0.3)
+
             plt.subplot(221)
             self.residuals_fitted()
 
@@ -142,7 +148,6 @@ class PyPlotLm:
               line_kws={'color': 'red', 'lw': 1})
 
         for i in self.resid_max_3:
-            # plt.annotate(i, xy=(self.fitted_values[i], abs(self.residuals[i])))
             plt.annotate(i, xy=(self.fitted_values[i], self.residuals[i]))
 
         plt.title('Residuals vs Fitted', size=20)
@@ -245,7 +250,7 @@ class PyPlotLm:
                 plt.annotate(1, xy=[cooks_x[-1], i], color='red')
 
         if any(cooks_y_05_neg > min_y):
-            plt.plot(cooks_x, cooks_y_05_neg, ls = ':', color = 'r')    
+            plt.plot(cooks_x, cooks_y_05_neg, ls = ':', color = 'r')
 
             for i in [cooks_y_05_neg[-1], cooks_y_05_neg[-1]]:
                 plt.annotate(1, xy=[cooks_x[-1], i], color='red')
@@ -259,7 +264,7 @@ class PyPlotLm:
     def cooks_leverage(self):
         """ plot 6. Cook's Distance vs Leverage
         """
-        sns.regplot(self.h, self.cooks,
+        sns.regplot(self.h / (1-self.h), self.cooks,
             lowess=True,
             scatter_kws={'alpha': 0.5},
             line_kws={'color': 'red', 'lw': 1})
@@ -267,6 +272,6 @@ class PyPlotLm:
         for i in self.cooks_max_3:
             plt.annotate(i, xy=[self.h[i], self.cooks[i]])
 
-        plt.title("Cook's dist vs Leverage $h_{ii}$", size=20)
+        plt.title("Cook's dist vs Leverage $h_{ii}/(1-h_{ii})$", size=20)
         plt.xlabel('Leverage $h_{ii}$', size=20)
         plt.ylabel("Cook's distance", size=20)
