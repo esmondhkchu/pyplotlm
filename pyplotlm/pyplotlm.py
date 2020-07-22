@@ -264,13 +264,37 @@ class PyPlotLm:
     def cooks_leverage(self):
         """ plot 6. Cook's Distance vs Leverage
         """
-        sns.regplot(self.h / (1-self.h), self.cooks,
-            lowess=True,
-            scatter_kws={'alpha': 0.5},
-            line_kws={'color': 'red', 'lw': 1})
+        # define contour lines values
+        h_ = self.h/(1-self.h)
+        max_x = max(h_) + max(h_)*0.15
+        max_y = max(self.cooks) + max(self.cooks)*0.15
+
+        bval = np.arange(max(np.sqrt(self.p*self.cooks/h_))+1)
+
+        sns.regplot(h_, self.cooks,
+                    lowess=True,
+                    scatter_kws={'alpha': 0.5},
+                    line_kws={'color': 'red', 'lw': 1})
 
         for i in self.cooks_max_3:
-            plt.annotate(i, xy=[self.h[i], self.cooks[i]])
+            plt.annotate(i, xy=[h_[i], self.cooks[i]])
+
+        for i in bval:
+            bi2 = i**2
+            if max_y > bi2*max_x:
+                y1 = bi2*max_x
+                abline(0, bi2, x_max=max_x, marker=':', color='black')
+                if i == 0:
+                    plt.annotate(i, xy=[max_x, 0])
+                else:
+                    plt.annotate(i, xy=[max_y/bi2, max_y])
+            else:
+                plt.plot([0, max_y / bi2], [0, max_y], ':', color='black')
+                if i == 0:
+                    xi = 0
+                else:
+                    xi = max_y / bi2
+                plt.annotate(i, xy=[xi, max_y])
 
         plt.title("Cook's dist vs Leverage $h_{ii}/(1-h_{ii})$", size=20)
         plt.xlabel('Leverage $h_{ii}$', size=20)
