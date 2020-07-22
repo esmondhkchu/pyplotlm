@@ -7,7 +7,7 @@ with open('README.md') as f:
 setup(
   name = 'pyplotlm',
   packages = ['pyplotlm'],
-  version = '0.0.1',
+  version = '0.0.0.1',
   license='MIT',
   description = 'A Python package for sklearn to produce linear regression diagnostic plots similar to those made in R with plot.lm',
   long_description=long_description,
@@ -15,7 +15,7 @@ setup(
   author = 'Esmond Chu',
   author_email = 'chuhke@gmail.com',
   url = 'https://github.com/esmondhkchu/pyplotlm',
-  download_url = 'https://github.com/esmondhkchu/pyplotlm/archive/v0.0.1.tar.gz',
+  download_url = 'https://github.com/esmondhkchu/pyplotlm/archive/v0.0.0.1.tar.gz',
   keywords = ['statistics', 'machine learning', 'regression'],
   test_suite = 'tests',
   install_requires=['numpy', 'scipy', 'matplotlib', 'seaborn'],
