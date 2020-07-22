@@ -21,7 +21,7 @@ There are six plots available:
 3. Scale-Location
 4. Cook's Distance
 5. Residuals vs Leverage
-6. Cook's Distance vs Leverage (leverage / (1 - leverage))
+6. Cook's Distance vs leverage / (1 - leverage)
 
 ## Usage
 Below is how you would produce the diagnostic plots in Python:
