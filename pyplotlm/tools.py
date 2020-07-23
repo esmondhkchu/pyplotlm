@@ -13,7 +13,6 @@ class DimensionError(Error):
 
 def abline(intercept, slope, x_min=0, x_max=10, marker=':', color='black'):
     """ plot a line from slope and intercept
-
     Parameters: intercept (float) - intercept
                 slope (float) - slope
                 x_min (float) - x minimum value, optional, default is 0
