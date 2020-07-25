@@ -12,8 +12,9 @@ class PyPlotLm:
     def __init__(self, reg, X, y, intercept=False):
         """ regression analysis for a sklearn linear regression model, reproduction of R plot.lm and summary()
 
-            A. style summary of regression report
-            B. six plots avaiable:
+            Core functionalities:
+            A. generate R style regression model report
+            B. plot six avaiable diagnostic plots:
                 1. Residuals vs Fitted
                 2. Normal Q-Q
                 3. Scale-Location
