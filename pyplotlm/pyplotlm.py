@@ -10,10 +10,10 @@ import seaborn as sns
 
 class PyPlotLm:
     def __init__(self, reg, X, y, intercept=False):
-        """ regression analysis for a sklearn linear regression model, reproduction of R plot.lm and summary()
+        """ regression analysis for a sklearn linear regression model, reproduction of R summary.lm and plot.lm
 
             Core functionalities:
-            A. generate R style regression model report
+            A. generate a R style regression model summary
             B. plot six avaiable diagnostic plots:
                 1. Residuals vs Fitted
                 2. Normal Q-Q
@@ -22,7 +22,7 @@ class PyPlotLm:
                 5. Residuals vs Leverage
                 6. Cook's Distance vs Leverage
 
-        Parameters: reg (sklearn.linear_model) - a fitted sklearn.linear_model object
+        Parameters: reg (sklearn.linear_model) - a fitted sklearn.linear_model or similar, such as lasso, object
                     X (nd-array) - the design matrix
                     y (array) - the response
                     intercept (boo) - if the X data has intercept or not
@@ -113,6 +113,7 @@ class PyPlotLm:
 
         2. Residuals and Influence in Regression
         https://conservancy.umn.edu/handle/11299/37076
+        https://en.wikipedia.org/wiki/Leverage_(statistics)
         https://en.wikipedia.org/wiki/Studentized_residual
 
         3. Cook's Distance
