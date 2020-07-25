@@ -17,14 +17,14 @@ pip install pyplotlm
 ## Introduction
 There are two core functionalities:
 
-A. style summary of regression report <br>
-B. six plots avaiable: <br>
-    1. Residuals vs Fitted
-    2. Normal Q-Q
-    3. Scale-Location
-    4. Cook's Distance
-    5. Residuals vs Leverage
-    6. Cook's Distance vs Leverage
+A. generate R style regression model report <br>
+B. plot six avaiable diagnostic plots: <br>
+    1. Residuals vs Fitted <br>
+    2. Normal Q-Q <br>
+    3. Scale-Location <br>
+    4. Cook's Distance <br>
+    5. Residuals vs Leverage <br>
+    6. Cook's Distance vs Leverage <br>
 
 ## Usage
 Below is how you would produce the diagnostic plots in Python:
