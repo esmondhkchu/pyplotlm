@@ -17,8 +17,9 @@ pip install pyplotlm
 ## Introduction
 There are two core functionalities:
 
-A. generate R style regression model report <br>
-B. plot six avaiable diagnostic plots: <br>
+A. generate R style regression model report (R summary.lm)<br>
+
+B. plot six avaiable diagnostic plots (R plot.lm): <br>
     1. Residuals vs Fitted <br>
     2. Normal Q-Q <br>
     3. Scale-Location <br>

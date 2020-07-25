@@ -393,15 +393,17 @@ class PyPlotLm:
         plt.ylabel("Cook's distance", size=20)
 
     def summary(self):
+        """ print model report, similar to R summary.lm
+        """
         # residual quantiles
         resid_quantiles = np.array([format(i, '.4f') for i in np.quantile(self.residuals, [0, 0.25, 0.5, 0.75, 1])])
         resid_quantiles_df = pd.DataFrame(resid_quantiles.reshape(1,-1), columns=['Min','1Q','Median', '3Q', 'Max'])
 
         # coefficients
-        clean_coef = [format(i, '.3e') for i in self.coef]
-        clean_std_e = [format(i, '.3e') for i in self.se]
-        clean_t_stat = [format(i, '.3e') for i in self.t_stat_]
-        clean_t_p = [format(i, '.4') for i in self.t_p_val]
+        clean_coef = [format(i, '.4f') for i in self.coef]
+        clean_std_e = [format(i, '.4f') for i in self.se]
+        clean_t_stat = [format(i, '.4f') for i in self.t_stat_]
+        clean_t_p = [format(i, '.4f') for i in self.t_p_val]
         p_sign = ['***' if i <= 0.001 else '** ' if i <= 0.01 else '*  ' if i <= 0.05 else '.  ' if i <= 0.1 else '' for i in self.t_p_val]
 
         t_dict = {'Estimate':clean_coef, 'Std. Error': clean_std_e, 't value': clean_t_stat, 'Pr(>|t|)':clean_t_p, '':p_sign}
@@ -415,7 +417,7 @@ class PyPlotLm:
         clean_adj_r2 = format(self.adj_r2, '.4f')
 
         # f
-        clean_f_stat = format(self.f_stat_, '.1e')
+        clean_f_stat = format(self.f_stat_, '.2f')
         clean_f_p = format(self.f_p_val, '.2e')
 
         # print
