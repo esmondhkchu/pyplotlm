@@ -28,7 +28,7 @@ B. plot six avaiable diagnostic plots: <br>
 
 ## Usage
 Below is how you would produce the diagnostic plots in Python:
-```python
+```
 >>> from sklearn.datasets import load_diabetes
 >>> from sklearn.linear_model import LinearRegression
 >>> from pyplotlm import *
