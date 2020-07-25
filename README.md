@@ -6,7 +6,7 @@ fit = lm(y ~ ., data=data)
 par(mfrow=c(2,2))
 plot(fit)
 ```
-![](https://github.com/esmondhkchu/pyplotlm/blob/dev/graph/R_plot.png) <br>
+![](https://github.com/esmondhkchu/pyplotlm/blob/dev/plots/R_plot.png) <br>
 The goal of this package is to make the process of producing diagnostic plots as simple as it is in R.
 
 ## Install
@@ -67,7 +67,7 @@ F-statistic: 4.6e+01 on 10 and 431 DF,  p-value: 1.11e-16
 >>> plt.show()
 ```
 This will produce the same set of diagnostic plots: <br>
-![](https://github.com/esmondhkchu/pyplotlm/blob/dev/graph/python_plot.png) <br>
+![](https://github.com/esmondhkchu/pyplotlm/blob/dev/plots/python_plot.png) <br>
 
 ## References:
 1. Regression Deletion Diagnostics (R) <br>
