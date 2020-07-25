@@ -76,7 +76,7 @@ class PyPlotLm:
         >>> X, y = load_diabetes(return_X_y=True)
 
         >>> reg = LinearRegression().fit(X, y)
-        
+
         >>> obj = PyPlotLm(reg, X, y, intercept=False)
         >>> obj.summary()
         Residuals:
