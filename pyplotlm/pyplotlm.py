@@ -3,20 +3,24 @@ from .influence import *
 from .quantile import *
 
 import numpy as np
+import pandas as pd
 
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 class PyPlotLm:
     def __init__(self, reg, X, y, intercept=False):
-        """ plot a sklearn linear regression model, analogy to R plot(lm())
-            there are six plots avaiable:
-            1. Residuals vs Fitted
-            2. Normal Q-Q
-            3. Scale-Location
-            4. Cook's Distance
-            5. Residuals vs Leverage
-            6. Cook's Distance vs Leverage
+        """ regression analysis for a sklearn linear regression model, reproduction of R plot.lm and summary()
+
+            Core functionalities:
+            A. generate R style regression model report
+            B. plot six avaiable diagnostic plots:
+                1. Residuals vs Fitted
+                2. Normal Q-Q
+                3. Scale-Location
+                4. Cook's Distance
+                5. Residuals vs Leverage
+                6. Cook's Distance vs Leverage
 
         Parameters: reg (sklearn.linear_model) - a fitted sklearn.linear_model object
                     X (nd-array) - the design matrix
@@ -24,7 +28,9 @@ class PyPlotLm:
                     intercept (boo) - if the X data has intercept or not
                                       optional, default is False
 
-        Arributes: fitted_values (array) - fitted values, aka y_hat
+        Arributes: X (nd-array) - the design matrix, with intercept
+                   y (nd-array) - the raw response
+                   fitted_values (array) - fitted values, aka y_hat
                    residuals (array) - raw residuals, i.e y - y_hat
                    resid_max_3 (array) - top max 3 of raw residuals
 
@@ -40,6 +46,64 @@ class PyPlotLm:
 
                    cooks (array) - Cook's Distance
                    cooks_max_3 (array) - top max 3 of Cook's Distance
+
+                   rse (float) - residual standard error
+                   se (array) - coefficient standard error
+                   coef (array) - regression coefficients
+                   t_stat_ (array) - coefficient t-statistics
+                   t_p_val (array) - coefficient p-values from t-statistics
+                   f_stat_ (float) - regression f-statistic
+                   f_p_val (float) - p-value from regression f-statistic
+                   r2 (float) - r-squared
+                   adj_r2 (float) - adjusted r-squared
+
+        Methods: summary(self) - print model report
+                 plot(self, which=None) - plot diagnostic plots
+                                          if which is None, will plot plot # 1,2,3,5
+                                          a specific plot can be plot separately using the which parameters
+                                          or use the below methods
+                       - residuals_fitted(self) - plot 1
+                       - normal_qq(self) - plot 2
+                       - scale_location(self) - plot 3
+                       - cooks_distance(self) - plot 4
+                       - residual_leverage(self) - plot 5
+                       - cooks_leverage(self) - plot 6
+
+        Examples:
+        >>> from sklearn.datasets import load_diabetes
+        >>> from sklearn.linear_model import LinearRegression
+        >>> from pyplotlm import *
+
+        >>> X, y = load_diabetes(return_X_y=True)
+
+        >>> reg = LinearRegression().fit(X, y)
+
+        >>> obj = PyPlotLm(reg, X, y, intercept=False)
+        >>> obj.summary()
+        Residuals:
+               Min        1Q   Median       3Q       Max
+         -155.8290  -38.5339  -0.2269  37.8061  151.3550
+
+        Coefficients:
+                       Estimate Std. Error     t value   Pr(>|t|)
+        (Intercept)   1.521e+02  2.576e+00   5.906e+01        0.0  ***
+        X0           -1.001e+01  5.975e+01  -1.676e-01      0.867
+        X1           -2.398e+02  6.122e+01  -3.917e+00  0.0001041  ***
+        X2            5.198e+02  6.653e+01   7.813e+00  4.308e-14  ***
+        X3            3.244e+02  6.542e+01   4.958e+00  1.024e-06  ***
+        X4           -7.922e+02  4.167e+02  -1.901e+00    0.05795  .
+        X5            4.767e+02  3.390e+02   1.406e+00     0.1604
+        X6            1.010e+02  2.125e+02   4.754e-01     0.6347
+        X7            1.771e+02  1.615e+02   1.097e+00     0.2735
+        X8            7.513e+02  1.719e+02   4.370e+00  1.556e-05  ***
+        X9            6.763e+01  6.598e+01   1.025e+00      0.306
+        ---
+        Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+        Residual standard error: 54.154 on 431 degrees of freedom
+        Multiple R-squared: 0.5177,     Adjusted R-squared: 0.5066
+        F-statistic: 4.6e+01 on 10 and 431 DF,  p-value: 1.11e-16
+        >>> obj.plot()
 
         References:
         1. Regression Deletion Diagnostics (R)
@@ -62,11 +126,24 @@ class PyPlotLm:
             raise DimensionError('X dimension must match with y dimension')
 
         self.reg = reg
-        self.X = X
-        self.y = y
+
+        # total number of observations
+        self.n = X.shape[0]
+
+        # define self.X
+        if intercept:
+            self.X = X
+
+        else:
+            self.X = np.concatenate([np.ones(self.n).reshape(-1,1), X], 1)
+
+        # total dimension, including intercept
+        self.p = self.X.shape[-1]
+
+        self.y = np.array(y)
 
         # fitted values from model
-        self.fitted_values = self.reg.predict(self.X)
+        self.fitted_values = self.reg.predict(X)
         # raw residuals from model
         self.residuals = self.y - self.fitted_values
 
@@ -74,15 +151,9 @@ class PyPlotLm:
         self.resid_max_3 = np.argsort(abs(self.residuals))[::-1][:3]
 
         # leverage
-        self.h = leverage(self.X, intercept)
+        self.h = leverage(self.X)
 
         # studentized residuals
-        if intercept:
-            self.p = self.X.shape[-1]
-        else:
-            self.p = self.X.shape[-1] + 1
-
-        self.n = self.X.shape[0]
         self.standard_residuals = internally_studentized(self.residuals, self.h, self.p, self.n)
 
         # square root of absolute studentized residuals
@@ -94,6 +165,31 @@ class PyPlotLm:
         # Cook's Distance
         self.cooks = cooks_distance(self.standard_residuals, self.h, self.p)
         self.cooks_max_3 = np.argsort(self.cooks)[::-1][:3]
+
+        #################### coefficient tests ####################
+
+        # residual standard error
+        self.rse = np.sqrt(np.dot(self.residuals.T, self.residuals) / (self.n-self.p))
+
+        # t-test
+        # coefficient standard errors
+        self.se = coef_standard_error(self.residuals, self.X)
+
+        self.coef = np.append(self.reg.intercept_, self.reg.coef_)
+
+        # t-statistics
+        self.t_stat_ = self.coef / self.se
+        # t p-values
+        self.t_p_val = 2 * (1 - stats.t.cdf(np.abs(self.t_stat_), self.n-self.p))
+
+        # f-test
+        # f-statistics
+        self.f_stat_ = f_stat(self.residuals, self.fitted_values, self.y, self.p)
+        # f p-values
+        self.f_p_val = 1-stats.f.cdf(self.f_stat_, self.p-1, self.n-self.p)
+
+        # r-squared & adjusted r-squared
+        self.r2, self.adj_r2 = r_squared(self.y, self.residuals, self.p)
 
     def plot(self, which=None, size=(12,10)):
         """ by default this method plots the most common 4 plots, which is 1, 2, 3 and 5
@@ -295,3 +391,42 @@ class PyPlotLm:
         plt.title("Cook's dist vs Leverage $h_{ii}/(1-h_{ii})$", size=20)
         plt.xlabel('Leverage $h_{ii}$', size=20)
         plt.ylabel("Cook's distance", size=20)
+
+    def summary(self):
+        # residual quantiles
+        resid_quantiles = np.array([format(i, '.4f') for i in np.quantile(self.residuals, [0, 0.25, 0.5, 0.75, 1])])
+        resid_quantiles_df = pd.DataFrame(resid_quantiles.reshape(1,-1), columns=['Min','1Q','Median', '3Q', 'Max'])
+
+        # coefficients
+        clean_coef = [format(i, '.3e') for i in self.coef]
+        clean_std_e = [format(i, '.3e') for i in self.se]
+        clean_t_stat = [format(i, '.3e') for i in self.t_stat_]
+        clean_t_p = [format(i, '.4') for i in self.t_p_val]
+        p_sign = ['***' if i <= 0.001 else '** ' if i <= 0.01 else '*  ' if i <= 0.05 else '.  ' if i <= 0.1 else '' for i in self.t_p_val]
+
+        t_dict = {'Estimate':clean_coef, 'Std. Error': clean_std_e, 't value': clean_t_stat, 'Pr(>|t|)':clean_t_p, '':p_sign}
+        t_df = pd.DataFrame(t_dict, index=['(Intercept)']+[f'X{i}' for i in range(self.p-1)])
+
+        # residual standard error
+        clean_rse = format(self.rse, '.3f')
+
+        # r2 & adj r2
+        clean_r2 = format(self.r2, '.4f')
+        clean_adj_r2 = format(self.adj_r2, '.4f')
+
+        # f
+        clean_f_stat = format(self.f_stat_, '.1e')
+        clean_f_p = format(self.f_p_val, '.2e')
+
+        # print
+        print('Residuals:')
+        print(resid_quantiles_df.to_string(index=False))
+        print()
+        print('Coefficients:')
+        print(t_df.to_string())
+        print('---')
+        print("Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1")
+        print()
+        print(f'Residual standard error: {clean_rse} on {self.n-self.p} degrees of freedom')
+        print(f'Multiple R-squared: {clean_r2},     Adjusted R-squared: {clean_adj_r2}')
+        print(f'F-statistic: {clean_f_stat} on {self.p-1} and {self.n-self.p} DF,  p-value: {clean_f_p}')
