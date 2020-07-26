@@ -71,7 +71,7 @@ Below is how you would produce the summary and diagnostic plots in Python:
 >>> reg = LinearRegression().fit(X, y)
 
 >>> obj = PyPlotLm(reg, X, y, intercept=False)
->>> obj.summary()
+>>> obj.summary() # or summary(obj)
 Residuals:
        Min        1Q   Median       3Q       Max
  -155.8290  -38.5339  -0.2269  37.8061  151.3550
@@ -96,7 +96,7 @@ Residual standard error: 54.154 on 431 degrees of freedom
 Multiple R-squared: 0.5177,     Adjusted R-squared: 0.5066
 F-statistic: 46.27 on 10 and 431 DF,  p-value: 1.11e-16
 
->>> obj.plot()
+>>> obj.plot() or plot(obj)
 >>> plt.show()
 ```
 This will produce the same set of diagnostic plots: <br>
