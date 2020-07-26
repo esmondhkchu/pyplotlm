@@ -20,7 +20,7 @@ class PyPlotLm:
                 3. Scale-Location
                 4. Cook's Distance
                 5. Residuals vs Leverage
-                6. Cook's Distance vs Leverage
+                6. Cook's Distance vs Leverage / (1-Leverage)
 
         Parameters: reg (sklearn.linear_model) - a fitted sklearn.linear_model or similar, such as lasso, object
                     X (nd-array) - the design matrix

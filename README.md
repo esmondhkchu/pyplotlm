@@ -56,7 +56,7 @@ B. plot six avaiable diagnostic plots (R plot.lm): <br>
     3. Scale-Location <br>
     4. Cook's Distance <br>
     5. Residuals vs Leverage <br>
-    6. Cook's Distance vs Leverage <br>
+    6. Cook's Distance vs Leverage / (1-Leverage) <br>
 
 ## Usage
 Below is how you would produce the summary and diagnostic plots in Python:
