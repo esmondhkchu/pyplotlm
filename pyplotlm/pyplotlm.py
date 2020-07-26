@@ -14,7 +14,7 @@ class PyPlotLm:
 
             Core functionalities:
             A. generate a R style regression model summary
-            B. plot six avaiable diagnostic plots:
+            B. plot six available diagnostic plots:
                 1. Residuals vs Fitted
                 2. Normal Q-Q
                 3. Scale-Location
@@ -193,17 +193,17 @@ class PyPlotLm:
         self.r2, self.adj_r2 = r_squared(self.y, self.residuals, self.p)
 
     def plot(self, which=None, size=(12,10)):
-        """ by default this method plots the most common 4 plots, which is 1, 2, 3 and 5
+        """ by default this method plots the most common 4 plots, which are 1, 2, 3 and 5
             i.e.
             1. Residuals vs Fitted
             2. Normal Q-Q
             3. Scale-Location
             5. Residuals vs Leverage
 
-        4. Cook's Distance and 6. Cook's Distance vs Leverage plot aren't as common, so will exclude from default
-        But, we can create these plot by using the 'which' parameters
+        4. Cook's Distance and 6. Cook's Distance vs Leverage plot aren't as common, so we will exclude from default
+        But, we can create these plots by using the 'which' parameters
 
-        Parameters: which (int) - by default, it will plot the most common 4 plots, if which is specified, it will plot plot the specific plot
+        Parameters: which (int) - by default, it will plot the most common 4 plots, if 'which' is specified, it will create the specified plot
                     size (tuple) - the size for the 2x2 default plots
         """
         if which is not None:
@@ -248,8 +248,8 @@ class PyPlotLm:
             plt.annotate(i, xy=(self.fitted_values[i], self.residuals[i]))
 
         plt.title('Residuals vs Fitted', size=20)
-        plt.xlabel('Fitted values', size=20)
-        plt.ylabel('Residuals', size=20)
+        plt.xlabel('Fitted values', size=15)
+        plt.ylabel('Residuals', size=15)
 
     def normal_qq(self):
         """ plot 2. Normal Q-Q
@@ -270,8 +270,8 @@ class PyPlotLm:
                 plt.annotate(i, xy=[self.theo_quantiles[pos_idx], sorted(self.standard_residuals)[pos_idx]])
 
                 plt.title('Normal Q-Q', size=20)
-                plt.xlabel('Theoretical Quantiles', size=20)
-                plt.ylabel('Standardized residuals', size=20)
+                plt.xlabel('Theoretical Quantiles', size=15)
+                plt.ylabel('Standardized residuals', size=15)
 
     def scale_location(self):
         """ plot 3. Scale-Location
@@ -285,8 +285,8 @@ class PyPlotLm:
             plt.annotate(i, xy=[self.fitted_values[i], self.root_standard_residuals[i]])
 
         plt.title('Scale-Location', size=20)
-        plt.xlabel('Fitted values', size=20)
-        plt.ylabel('$\sqrt{|Standardized residuals|}$', size=20)
+        plt.xlabel('Fitted values', size=15)
+        plt.ylabel('$\sqrt{|Standardized residuals|}$', size=15)
 
     def cooks_distance(self):
         """ plot 4. Cook's Distance
@@ -297,9 +297,9 @@ class PyPlotLm:
         for i in self.cooks_max_3:
             plt.annotate(i, xy=[i, self.cooks[i]])
 
-        plt.title("Cook's Distance", size=20)
-        plt.xlabel('Obs. number', size=20)
-        plt.ylabel("Cook's Distance", size=20)
+        plt.title("Cook's distance", size=20)
+        plt.xlabel('Obs. number', size=15)
+        plt.ylabel("Cook's distance", size=15)
 
     def residual_leverage(self):
         """ plot 5. Residuals vs Leverage
@@ -327,7 +327,7 @@ class PyPlotLm:
 
         # plot cook's distance
         if any(cooks_y_1 < max_y):
-            plt.plot(cooks_x, cooks_y_1, ls = ':', color = 'r', label="Cooks's Distance")
+            plt.plot(cooks_x, cooks_y_1, ls = ':', color = 'r', label="Cooks's distance")
 
             for i in [cooks_y_1[-1], cooks_y_1_neg[-1]]:
                 plt.annotate(1, xy=[cooks_x[-1], i], color='red')
@@ -355,8 +355,8 @@ class PyPlotLm:
         plt.ylim(min_y, max_y)
 
         plt.title('Residuals vs Leverage', size=20)
-        plt.xlabel('Leverage', size=20)
-        plt.ylabel('Standardized residuals', size=20)
+        plt.xlabel('Leverage', size=15)
+        plt.ylabel('Standardized residuals', size=15)
 
     def cooks_leverage(self):
         """ plot 6. Cook's Distance vs Leverage
@@ -390,8 +390,8 @@ class PyPlotLm:
                 plt.annotate(i, xy=[xi, max_y-max_y*0.05])
 
         plt.title("Cook's dist vs Leverage $h_{ii}/(1-h_{ii})$", size=20)
-        plt.xlabel('Leverage $h_{ii}$', size=20)
-        plt.ylabel("Cook's distance", size=20)
+        plt.xlabel('Leverage $h_{ii}$', size=15)
+        plt.ylabel("Cook's distance", size=15)
 
     def summary(self):
         """ print model report, similar to R summary.lm

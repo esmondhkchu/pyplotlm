@@ -1,5 +1,5 @@
 # pyplotlm - R style linear regression summary and diagnostic plots for sklearn
-This package is a reproduction of the `summary.pl` and `plot.lm` function in R but for a python environment and is meant to support the sklearn by adding model summary and diagnostic plots for linear regression. <br>
+This package is a reproduction of the summary.lm and plot.lm function in R but for a python environment and is meant to support the sklearn library by adding model summary and diagnostic plots for linear regression.
 In the R environment, we can fit a linear model and generate a model summary and diagnostic plots by doing the following: <br>
 ```
 > fit = lm(y ~ ., data=data)
@@ -50,7 +50,7 @@ There are two core functionalities:
 
 A. generate a R style regression model summary (R summary.lm) <br>
 
-B. plot six avaiable diagnostic plots (R plot.lm): <br>
+B. plot six available diagnostic plots (R plot.lm): <br>
     1. Residuals vs Fitted <br>
     2. Normal Q-Q <br>
     3. Scale-Location <br>
