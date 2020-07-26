@@ -433,3 +433,13 @@ class PyPlotLm:
         print(f'Residual standard error: {clean_rse} on {self.n-self.p} degrees of freedom')
         print(f'Multiple R-squared: {clean_r2},     Adjusted R-squared: {clean_adj_r2}')
         print(f'F-statistic: {clean_f_stat} on {self.p-1} and {self.n-self.p} DF,  p-value: {clean_f_p}')
+
+def summary(obj):
+    """ generate summary from a PyPlotLm.pyplotlm object
+    """
+    obj.summary()
+
+def plot(obj, which=None):
+    """ plot diagnostic plots from a PyPlotLm.pyplotlm object
+    """
+    obj.plot(which=which)

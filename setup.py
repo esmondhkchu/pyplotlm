@@ -9,7 +9,7 @@ setup(
   packages = ['pyplotlm'],
   version = '0.1.1',
   license='MIT',
-  description = 'A Python package for sklearn to produce linear regression diagnostic plots similar to those made in R with plot.lm',
+  description = 'A Python package for sklearn to produce linear regression summary and diagnostic plots similar to those made in R with summary.lm and plot.lm',
   long_description=long_description,
   long_description_content_type="text/markdown",
   author = 'Esmond Chu',

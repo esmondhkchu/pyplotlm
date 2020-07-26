@@ -11,8 +11,8 @@ Call:
 lm(formula = y ~ ., data = data)
 
 Residuals:
-     Min       1Q   Median       3Q      Max 
--155.829  -38.534   -0.227   37.806  151.355 
+     Min       1Q   Median       3Q      Max
+-155.829  -38.534   -0.227   37.806  151.355
 
 Coefficients:
             Estimate Std. Error t value Pr(>|t|)    
@@ -31,7 +31,7 @@ X9            67.625     65.984   1.025 0.305998
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Residual standard error: 54.15 on 431 degrees of freedom
-Multiple R-squared:  0.5177,	Adjusted R-squared:  0.5066 
+Multiple R-squared:  0.5177,	Adjusted R-squared:  0.5066
 F-statistic: 46.27 on 10 and 431 DF,  p-value: < 2.2e-16
 
 > par(mfrow=c(2,2))
@@ -63,6 +63,7 @@ Below is how you would produce the summary and diagnostic plots in Python:
 ```
 >>> from sklearn.datasets import load_diabetes
 >>> from sklearn.linear_model import LinearRegression
+>>> import matplotlib.pyplot as plt
 >>> from pyplotlm import *
 
 >>> X, y = load_diabetes(return_X_y=True)
