@@ -361,12 +361,10 @@ class PyPlotLm:
     def cooks_leverage(self):
         """ plot 6. Cook's Distance vs Leverage
         """
-        # define contour lines values
-        h_ = self.h/(1-self.h)
-        max_x = max(h_) + max(h_)*0.05
-        max_y = max(self.cooks) + max(self.cooks)*0.05
+        h_ = self.h / (1-self.h)
 
-        bval = [round(i*2) / 2 for i in np.linspace(0, max(self.standard_residuals), 5)]
+        max_x = max(h_)
+        max_y = max(self.cooks)
 
         sns.regplot(h_, self.cooks,
                     lowess=True,
@@ -376,18 +374,20 @@ class PyPlotLm:
         for i in self.cooks_max_3:
             plt.annotate(i, xy=[h_[i], self.cooks[i]])
 
-        for i in bval:
-            bi2 = i**2
-            if max_y > bi2*max_x:
-                xi = max_x + 0.00035
-                yi = bi2*xi
-                abline(0, bi2, x_max=max_x)
-                plt.annotate(i, xy=[xi, yi])
+        plt.plot([0, max_x], [0,0], ':', color='black')
+        plt.annotate(0, xy=[max_x, 0])
+
+        bval = [np.ceil(i*2) / 2 for i in np.linspace(0.001, max(self.standard_residuals), 6)]
+        for hy_r in bval:
+            slope = (hy_r**2) / self.p
+            y = max_x * slope
+            x = max_y / slope
+            if x > max_x:
+                plt.plot([0, max_x], [0, y], ':', color='black')
+                plt.annotate(hy_r, xy=[max_x, y])
             else:
-                yi = max_y - 1.5*0.002
-                xi = yi / bi2
-                plt.plot([0, xi], [0, yi], ':', color='black')
-                plt.annotate(i, xy=[xi, max_y-max_y*0.05])
+                plt.plot([0, x], [0, max_y], ':', color='black')
+                plt.annotate(hy_r, xy=[x, max_y])
 
         plt.title("Cook's dist vs Leverage $h_{ii}/(1-h_{ii})$", size=20)
         plt.xlabel('Leverage $h_{ii}$', size=15)
