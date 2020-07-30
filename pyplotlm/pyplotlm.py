@@ -50,7 +50,7 @@ class PyPlotLm:
 
                    rse (float) - residual standard error
                    se (array) - coefficient standard error
-                   coef (array) - regression coefficients
+                   coef (array) - regression coefficients, including intercept
                    t_stat_ (array) - coefficient t-statistics
                    t_p_val (array) - coefficient p-values from t-statistics
                    f_stat_ (float) - regression f-statistic
