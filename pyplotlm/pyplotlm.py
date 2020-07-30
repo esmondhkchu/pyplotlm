@@ -43,7 +43,7 @@ class PyPlotLm:
                    root_standard_residuals (array) - square root of the absolute values of the
                                                      internally studentized residuals
 
-                   theo_quantiles (array) - theorectical quantiles
+                   theo_quantiles (array) - theorectical quantiles of studentized residuals
 
                    cooks (array) - Cook's Distance
                    cooks_max_3 (array) - top max 3 of Cook's Distance
@@ -204,8 +204,10 @@ class PyPlotLm:
         4. Cook's Distance and 6. Cook's Distance vs Leverage plot aren't as common, so we will exclude from default
         But, we can create these plots by using the 'which' parameters
 
-        Parameters: which (int) - by default, it will plot the most common 4 plots, if 'which' is specified, it will create the specified plot
-                    size (tuple) - the size for the 2x2 default plots
+        Parameters: which (int/str) - by default, it will plot the most common 4 plots,
+                                      if 'which' is specified, it will create the specified plot
+                                      if 'which' is 'all', then will plot all 6 plots in a 2x3 format
+                    size (tuple) - the size for the 2x2 default plots, or a enlarged size of this tuple for the 2x3 'all' plot
         """
         if which is not None:
             if which == 1:
@@ -219,6 +221,26 @@ class PyPlotLm:
             elif which == 5:
                 self.residual_leverage()
             elif which == 6:
+                self.cooks_leverage()
+            elif which == 'all':
+                plt.figure(figsize=(size[0]+12, size[1]+4))
+
+                plt.subplot(231)
+                self.residuals_fitted()
+
+                plt.subplot(232)
+                self.normal_qq()
+
+                plt.subplot(233)
+                self.scale_location()
+
+                plt.subplot(234)
+                self.cooks_distance()
+
+                plt.subplot(235)
+                self.residual_leverage()
+
+                plt.subplot(236)
                 self.cooks_leverage()
 
         else:

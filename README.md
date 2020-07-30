@@ -34,6 +34,7 @@ Residual standard error: 54.15 on 431 degrees of freedom
 Multiple R-squared:  0.5177,	Adjusted R-squared:  0.5066
 F-statistic: 46.27 on 10 and 431 DF,  p-value: < 2.2e-16
 
+
 > par(mfrow=c(2,2))
 > plot(fit)
 ```
