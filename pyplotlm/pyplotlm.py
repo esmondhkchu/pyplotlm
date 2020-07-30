@@ -1,6 +1,5 @@
 from .tools import *
 from .influence import *
-from .quantile import *
 
 import numpy as np
 import pandas as pd
@@ -161,7 +160,7 @@ class PyPlotLm:
         self.root_standard_residuals = np.sqrt(abs(self.standard_residuals))
 
         # theorectical quantiles
-        self.theo_quantiles = theorectical_quantiles(self.standard_residuals)
+        self.theo_quantiles = stats.probplot(self.standard_residuals, fit=False)[0]
 
         # Cook's Distance
         self.cooks = cooks_distance(self.standard_residuals, self.h, self.p)
@@ -255,7 +254,7 @@ class PyPlotLm:
         """ plot 2. Normal Q-Q
         """
         sns.regplot(self.theo_quantiles, sorted(self.standard_residuals),
-            lowess=True,
+            ci=0,
             scatter_kws={'alpha': 0.5},
             line_kws={'color': 'red', 'lw': 1})
 
@@ -390,7 +389,7 @@ class PyPlotLm:
                 plt.annotate(hy_r, xy=[x, max_y])
 
         plt.title("Cook's dist vs Leverage $h_{ii}/(1-h_{ii})$", size=20)
-        plt.xlabel('Leverage $h_{ii}$', size=15)
+        plt.xlabel('Leverage $h_{ii}/(1-h_{ii})$', size=15)
         plt.ylabel("Cook's distance", size=15)
 
     def summary(self):
