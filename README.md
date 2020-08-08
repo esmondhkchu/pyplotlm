@@ -38,7 +38,7 @@ F-statistic: 46.27 on 10 and 431 DF,  p-value: < 2.2e-16
 > par(mfrow=c(2,3))
 > plot(fit, which=1:6)
 ```
-![](https://github.com/esmondhkchu/pyplotlm/blob/dev/plots/R_plot.png) <br>
+![](https://github.com/esmondhkchu/pyplotlm/blob/master/plots/R_plot.png) <br>
 The goal of this package is to make this process as simple as it is in R for a sklearn LinearRegression object.
 
 ## Install
@@ -101,7 +101,7 @@ F-statistic: 46.27 on 10 and 431 DF,  p-value: 1.11e-16
 >>> plt.show()
 ```
 This will produce the same set of diagnostic plots: <br>
-![](https://github.com/esmondhkchu/pyplotlm/blob/dev/plots/python_plot.png) <br>
+![](https://github.com/esmondhkchu/pyplotlm/blob/master/plots/python_plot.png) <br>
 
 ## References:
 1. Regression Deletion Diagnostics (R) <br>
