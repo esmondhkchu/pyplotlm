@@ -35,8 +35,8 @@ Multiple R-squared:  0.5177,	Adjusted R-squared:  0.5066
 F-statistic: 46.27 on 10 and 431 DF,  p-value: < 2.2e-16
 
 
-> par(mfrow=c(2,2))
-> plot(fit)
+> par(mfrow=c(2,3))
+> plot(fit, which=1:6)
 ```
 ![](https://github.com/esmondhkchu/pyplotlm/blob/dev/plots/R_plot.png) <br>
 The goal of this package is to make this process as simple as it is in R for a sklearn LinearRegression object.
@@ -97,7 +97,7 @@ Residual standard error: 54.154 on 431 degrees of freedom
 Multiple R-squared: 0.5177,     Adjusted R-squared: 0.5066
 F-statistic: 46.27 on 10 and 431 DF,  p-value: 1.11e-16
 
->>> obj.plot() # or plot(obj)
+>>> obj.plot(which='all') # or plot(obj, which='all')
 >>> plt.show()
 ```
 This will produce the same set of diagnostic plots: <br>
